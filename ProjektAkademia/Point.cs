@@ -28,5 +28,10 @@ namespace ProjektAkademia
         {
             return new Point(p1.x / p2, p1.y / p2);
         }
+        public static explicit operator System.Windows.Point(Point point)
+        {
+            System.Windows.Point temp = new System.Windows.Point(point.x, point.y);
+            return temp;
+        }
     }
 }

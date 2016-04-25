@@ -43,6 +43,7 @@ namespace ProjektAkademia
             // update position
             foreach (var element in myElements)
             {
+               
                 element.move(timer.Interval.TotalSeconds,this.Pole);
             }
             Pole.UpdateLayout();
@@ -85,14 +86,31 @@ namespace ProjektAkademia
         {
             if(e.LeftButton == MouseButtonState.Pressed)
             {
-                timer2.Start();
-                myRoad.Clear();
-                
-                Random rand = new Random();
-                Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
-                myElements.Add(new Prostokat(rand, position));
-                this.Pole.Children.Add(myElements.Last<Figure>().Show());
-                Pole.UpdateLayout();
+                if (RoadDrswingRadioButton.IsChecked == true)
+                {
+                    timer2.Start();
+                    myRoad.Clear();
+                    List<Line>toRemove = new List<Line>();
+                    foreach (var o in Pole.Children)
+                    {
+                        if (o is Line)
+                            toRemove.Add((Line)o);
+                    }
+                    for (int i = 0; i < toRemove.Count; i++)
+                    {
+                        Pole.Children.Remove(toRemove[i]);
+                    }
+                    
+                }
+                if (sqrtAddingRadioButton.IsChecked == true)
+                {
+                    Random rand = new Random();
+                    Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
+                    myElements.Add(new Prostokat(rand, position));
+                    this.Pole.Children.Add(myElements.Last<Figure>().Show());
+                    Pole.UpdateLayout();
+                }
+                 
             }
             if(e.RightButton == MouseButtonState.Pressed)
             {
@@ -109,10 +127,10 @@ namespace ProjektAkademia
             {
                 if (myElements.Count != 0)
                 {
-                    Random rand = new Random(2);
+                    Random rand = new Random(DateTime.Now.Ticks.GetHashCode());
                     foreach (var element in myElements)
                     {
-                        element.Speed = new Point(rand.Next(1000), rand.Next(1000));
+                        element.Speed = new Point(rand.Next(1000)-rand.Next(1000), rand.Next(1000)-rand.Next(1000));
                     }
                 }
             }
@@ -129,9 +147,11 @@ namespace ProjektAkademia
                 myLine.X2 = myRoad.ElementAt<Point>(i+1).x;
                 myLine.Y1 = myRoad.ElementAt<Point>(i).y;
                 myLine.Y2 = myRoad.ElementAt<Point>(i+1).y;
+                
                 Pole.Children.Add(myLine);
+
+
             }
-             
             Pole.UpdateLayout();
         }
     }

@@ -11,8 +11,17 @@
             <ColumnDefinition Name="Pol" Width="1*"/>
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="startButton" Grid.Column="1" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="88" Height="30" Click="startButton_Click"/>
         <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="497" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
-
+        <StackPanel Grid.Column="1">
+            <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="88" Height="30" Click="startButton_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <RadioButton GroupName="cos" Name="RoadDrswingRadioButton" Margin="5,6,3,3" />
+                <Label Content="Rysowanie"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <RadioButton GroupName="cos" Name="sqrtAddingRadioButton" Margin="5,6,3,3" />
+                <Label Content="Prostokąty"></Label>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
