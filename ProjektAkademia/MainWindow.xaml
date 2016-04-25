@@ -1,0 +1,18 @@
+﻿<Window x:Class="ProjektAkademia.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjektAkademia"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="625" SizeChanged="Window_SizeChanged">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="Pol" Width="1*"/>
+            <ColumnDefinition Width="110"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="startButton" Grid.Column="1" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="88" Height="30" Click="startButton_Click"/>
+        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="497" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White"/>
+
+    </Grid>
+</Window>
