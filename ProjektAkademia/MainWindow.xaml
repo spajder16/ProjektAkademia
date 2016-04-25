@@ -12,7 +12,7 @@
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="startButton" Grid.Column="1" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="88" Height="30" Click="startButton_Click"/>
-        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="497" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White"/>
+        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="497" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
 
     </Grid>
 </Window>
