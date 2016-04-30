@@ -8,20 +8,28 @@
         Title="MainWindow" Height="450" Width="625" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="Pol" Width="1*"/>
-            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Name="Pol"/>
+            <ColumnDefinition Width="134"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="497" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
+        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="463" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
         <StackPanel Grid.Column="1">
-            <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="88" Height="30" Click="startButton_Click"/>
+            <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="startButton_Click"/>
+            <Button x:Name="deleteAllButton" Content="Delete all elements" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="deleteAllButton_Click"/>
+            <Button x:Name="deleteRoadButton" Content="Delete Road" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="deleteRoadButton_Click"/>
             <StackPanel Orientation="Horizontal" Margin="3">
-                <RadioButton GroupName="cos" Name="RoadDrswingRadioButton" Margin="5,6,3,3" />
-                <Label Content="Rysowanie"></Label>
+                <RadioButton GroupName="cos" Name="RoadDrawingRadioButton" Margin="5,6,3,3" />
+                <Label Content="Drawing"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="3">
-                <RadioButton GroupName="cos" Name="sqrtAddingRadioButton" Margin="5,6,3,3" />
-                <Label Content="Prostokąty"></Label>
+                <RadioButton GroupName="cos" Name="rectangleAddingRadioButton" Margin="5,6,3,3" />
+                <Label Content="Rectangle"></Label>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <RadioButton GroupName="cos" Name="swarmAddingRadioButton" Margin="5,6,3,3" />
+                <Label Content="Swarm"></Label>
+            </StackPanel>
+            <ComboBox x:Name="AddingOptionscomboBox"/>
+
         </StackPanel>
     </Grid>
 </Window>

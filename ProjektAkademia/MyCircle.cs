@@ -6,10 +6,10 @@ using System.Windows.Controls;
 
 namespace ProjektAkademia
 {
-    class Circle: Figure
+    class MyCircle: Figure
     {
 
-        public Circle(Random rand)
+        public MyCircle(Random rand)
         {
             me = new Ellipse();
             this.me.Width = 10;
@@ -19,6 +19,12 @@ namespace ProjektAkademia
             this.me.Fill = this.solidColorBrush;
             this.Position = new Point(10, 10);
             this.Speed = new Point(0, 0);
+            this.Destination = new Point(0, 0);
+            this.MovingToDestination = false;
+            this.OnRoad = false;
+            this.DestinationAchieved = true;
+            if (rand.Next(1) == 1) this.DirectionOnTheRoad = Direction.forward;
+            else this.DirectionOnTheRoad = Direction.backward;
         }
     }
 }

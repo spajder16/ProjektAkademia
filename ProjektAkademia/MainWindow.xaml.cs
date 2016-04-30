@@ -16,25 +16,26 @@ using System.Windows.Threading;
 
 namespace ProjektAkademia
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    
     public partial class MainWindow : Window
     {
         private DispatcherTimer timer = new DispatcherTimer(); // timer object
         private DispatcherTimer timer2 = new DispatcherTimer();
         List<Figure> myElements = new List<Figure>();
-        List<Point> myRoad = new List<Point>();
+        Road myRoad = new Road();
+        Random rand = new Random(DateTime.Now.Ticks.GetHashCode());
         public MainWindow()
         {
             InitializeComponent();
-            timer.Interval = TimeSpan.FromMilliseconds(50); // update 20 times/second
+            
+            timer.Interval = TimeSpan.FromMilliseconds(25); 
             timer.Tick += TimerTick;
             timer.Start();
-            timer2.Interval = TimeSpan.FromMilliseconds(10); // update 20 times/second
+            timer2.Interval = TimeSpan.FromMilliseconds(5);
             timer2.Tick += TimerTick2;
-            
 
+            this.AddingOptionscomboBox.ItemsSource = Enum.GetValues(typeof(AddingOptions));
+            this.AddingOptionscomboBox.SelectedIndex = 0;
         }
         private void TimerTick(object sender, EventArgs e)
         {
@@ -43,12 +44,18 @@ namespace ProjektAkademia
             // update position
             foreach (var element in myElements)
             {
-               
+                if(element.OnRoad == true & element.DestinationAchieved == true)
+                {
+                    Point newDestination = myRoad.NextPoint(element);
+                    element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, newDestination);
+
+                }
+                else if (element.OnRoad) element.UpDateSpeed(); 
                 element.move(timer.Interval.TotalSeconds,this.Pole);
             }
-            Pole.UpdateLayout();
             
-            //Canvas.SetLeft()
+            
+           
         }
 
         private void TimerTick2(object sender, EventArgs e)
@@ -56,20 +63,20 @@ namespace ProjektAkademia
             // movement in one interval
 
             // update position
-            myRoad.Add(new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y));
+            myRoad.RoadPoints.Add(new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y));
 
-            //Canvas.SetLeft()
+            
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            Random rand = new Random(DateTime.Now.Ticks.GetHashCode());
+           
             for (int i = 0; i < 500; i++)
             {
-                myElements.Add(new Prostokat(rand));
+                myElements.Add(new MyRectangle(rand));
                 myElements.Last<Figure>().Speed = new Point(rand.Next(200), rand.Next(200));
                 this.Pole.Children.Add(myElements.Last<Figure>().Show());
-                myElements.Add(new Circle(rand));
+                myElements.Add(new MyCircle(rand));
                 myElements.Last<Figure>().Speed = new Point(rand.Next(200), rand.Next(200));
                 this.Pole.Children.Add(myElements.Last<Figure>().Show());
             }
@@ -78,18 +85,23 @@ namespace ProjektAkademia
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.Pole.Width = this.Width - 140;
+            this.Pole.Width = this.Width - 180;
             this.Pole.Height = this.Height-60;
         }
 
         private void Pole_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            AddingOptions addingOption = (AddingOptions)Enum.Parse(typeof(AddingOptions), this.AddingOptionscomboBox.Text);
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (RoadDrswingRadioButton.IsChecked == true)
+                if (addingOption == AddingOptions.Road)
                 {
+                    foreach (var element in myElements)
+                    {
+                        element.ReleaseFormDestination();
+                    }
                     timer2.Start();
-                    myRoad.Clear();
+                    myRoad.RoadPoints.Clear();
                     List<Line>toRemove = new List<Line>();
                     foreach (var o in Pole.Children)
                     {
@@ -102,15 +114,27 @@ namespace ProjektAkademia
                     }
                     
                 }
-                if (sqrtAddingRadioButton.IsChecked == true)
+                if (addingOption == AddingOptions.Rectangle)
                 {
-                    Random rand = new Random();
+               
                     Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
-                    myElements.Add(new Prostokat(rand, position));
+                    myElements.Add(new MyRectangle(rand, position));
                     this.Pole.Children.Add(myElements.Last<Figure>().Show());
-                    Pole.UpdateLayout();
+                   
                 }
-                 
+                if (addingOption == AddingOptions.Swarm)
+                {
+                    
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
+                        myElements.Add(new MyRectangle(rand, position));
+                        this.Pole.Children.Add(myElements.Last<Figure>().Show());
+                    }
+                   
+                   
+                }
+
             }
             if(e.RightButton == MouseButtonState.Pressed)
             {
@@ -119,7 +143,8 @@ namespace ProjektAkademia
                 {
                     foreach (var element in myElements)
                     {
-                        element.Speed = (position - element.Position) ;
+                        
+                        if(!element.OnRoad) element.GoToTheDestination(timer.Interval.TotalSeconds, this.Pole, position);
                     }
                 }
             }
@@ -127,7 +152,7 @@ namespace ProjektAkademia
             {
                 if (myElements.Count != 0)
                 {
-                    Random rand = new Random(DateTime.Now.Ticks.GetHashCode());
+                    
                     foreach (var element in myElements)
                     {
                         element.Speed = new Point(rand.Next(1000)-rand.Next(1000), rand.Next(1000)-rand.Next(1000));
@@ -138,21 +163,57 @@ namespace ProjektAkademia
 
         private void Pole_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            timer2.Stop();
-            for (int i = 0; i < myRoad.Count-1; i++)
+            AddingOptions addingOption = (AddingOptions)Enum.Parse(typeof(AddingOptions), this.AddingOptionscomboBox.Text);
+            if (addingOption == AddingOptions.Road & e.ChangedButton == MouseButton.Left)
             {
-                Line myLine = new Line();
-                myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-                myLine.X1 = myRoad.ElementAt<Point>(i).x;
-                myLine.X2 = myRoad.ElementAt<Point>(i+1).x;
-                myLine.Y1 = myRoad.ElementAt<Point>(i).y;
-                myLine.Y2 = myRoad.ElementAt<Point>(i+1).y;
-                
-                Pole.Children.Add(myLine);
+                timer2.Stop();
+                for (int i = 0; i < myRoad.RoadPoints.Count - 1; i++)
+                {
+                    Line myLine = new Line();
+                    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+                    myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(i).x;
+                    myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).x;
+                    myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(i).y;
+                    myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).y;
 
+                    Pole.Children.Add(myLine);
+                }
+                foreach (var element in myElements)
+                {
+                    element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, myRoad.InitializationPointForElement(rand));
+                    element.OnRoad = true;
+                    element.DestinationAchieved = false;
+                }
 
             }
-            Pole.UpdateLayout();
+            
+        }
+
+        private void deleteAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Pole.Children.Clear();
+            this.myElements.Clear();
+            this.myRoad.RoadPoints.Clear();
+
+        }
+
+        private void deleteRoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var element in myElements)
+            {
+                element.ReleaseFormDestination();
+            }
+            myRoad.RoadPoints.Clear();
+            List<Line> toRemove = new List<Line>();
+            foreach (var o in Pole.Children)
+            {
+                if (o is Line)
+                    toRemove.Add((Line)o);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                Pole.Children.Remove(toRemove[i]);
+            }
         }
     }
 }

@@ -11,9 +11,9 @@ using System.Windows.Controls;
 
 namespace ProjektAkademia
 {
-    class Prostokat: Figure
+    class MyRectangle: Figure
     {
-        public Prostokat(Random rand)
+        public MyRectangle(Random rand)
         {
             me = new Rectangle();
             this.me.Width = 10;
@@ -24,9 +24,17 @@ namespace ProjektAkademia
             this.Position = new Point(10, 10);
             this.Speed = new Point(0, 0);
             this.updatePosition();
+            this.Destination = new Point(0, 0);
+            this.MovingToDestination = false;
+            this.OnRoad = false;
+            this.DestinationAchieved = true;
+
+            if (rand.Next(1) == 1) this.DirectionOnTheRoad = Direction.forward;
+            else this.DirectionOnTheRoad = Direction.backward;
+
 
         }
-        public Prostokat(Random rand, Point position)
+        public MyRectangle(Random rand, Point position)
         {
             me = new Rectangle();
             this.me.Width = 10;
@@ -37,6 +45,14 @@ namespace ProjektAkademia
             this.Position = position;
             this.Speed = new Point(0, 0);
             this.updatePosition();
+            this.Destination = new Point(0, 0);
+            this.MovingToDestination = false;
+            this.OnRoad = false;
+            this.DestinationAchieved = true;
+
+            if (rand.Next(1) == 1) this.DirectionOnTheRoad = Direction.forward;
+            else this.DirectionOnTheRoad = Direction.backward;
+
         }
     }
 }

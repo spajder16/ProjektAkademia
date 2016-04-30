@@ -10,13 +10,33 @@ using System.Windows.Controls;
 
 namespace ProjektAkademia
 {
-    
 
-    class Figure
+
+    class Figure : IDrawingObject
     {
-        public Shape me;
-        public Point Position;
-        public Point Speed;
+        
+        public Shape me { get; set; }
+        public Point Position { get; set; }
+        public Point Speed { get; set; }
+        protected Point _destination;
+        public Point Destination
+        {
+            get
+            {
+                return _destination;
+            }
+            set
+            {
+                _destination = value;
+                MovingToDestination = true;
+            }
+        }
+
+        protected bool MovingToDestination;
+        public bool OnRoad { get; set; }
+        public bool DestinationAchieved { get; set; }
+        public Direction DirectionOnTheRoad;
+
         public SolidColorBrush solidColorBrush { get; set; }
 
         protected void updatePosition()
@@ -24,9 +44,35 @@ namespace ProjektAkademia
             Canvas.SetLeft(this.me, this.Position.x);
             Canvas.SetTop(this.me, this.Position.y);
         }
+        public void GoToTheDestination(double timeInterval, Canvas Pole, Point Destination)
+        {
+            MovingToDestination = true;
+            this.Destination = Destination;
+            if (this.OnRoad)
+            {
+                Random rand = new Random((int)this.Position.x);
+                this.Speed = (Destination - Position)*(rand.Next(1000)/100+1);
+            }
+            else this.Speed = (Destination - Position);
+            this.DestinationAchieved = false;
+        }
         public void move(double timeInterval, Canvas Pole)
         {
             if (this.Speed.x == 0 & this.Speed.y == 0) return;
+            if (this.MovingToDestination == true)
+            {
+                int Precision = 10;
+                if (  Position.x < Destination.x + Precision
+                    & Position.x > Destination.x - Precision
+                    & Position.y < Destination.y + Precision
+                    & Position.y > Destination.y - Precision)
+                {
+                    this.Speed = new Point(0, 0);
+                    this.MovingToDestination = false;
+                    this.DestinationAchieved = true;
+                    return;
+                }
+            }
             double Height = Pole.Height;
             double widht = Pole.Width;
             double x = this.Position.x + this.Speed.x * timeInterval;
@@ -57,6 +103,17 @@ namespace ProjektAkademia
         public UIElement Show()
         {
             return me;
+        }
+        public void ReleaseFormDestination()
+        {
+            MovingToDestination = false;
+            OnRoad = false;
+            DestinationAchieved = true;
+        }
+        public void UpDateSpeed()
+        {
+            Random rand = new Random((int)this.Position.x);
+            this.Speed = (Destination - Position)*2 ;
         }
 
     }

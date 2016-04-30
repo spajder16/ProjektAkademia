@@ -55,9 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Circle.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="IDrawingObject.cs" />
+    <Compile Include="MyCircle.cs" />
     <Compile Include="Point.cs" />
-    <Compile Include="Prostokat.cs" />
+    <Compile Include="MyRectangle.cs" />
+    <Compile Include="Road.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
