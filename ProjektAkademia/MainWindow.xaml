@@ -5,31 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjektAkademia"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="625" SizeChanged="Window_SizeChanged">
+        Title="MainWindow" Height="484.012" Width="695.64" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="Pol"/>
-            <ColumnDefinition Width="134"/>
+            <ColumnDefinition Width="157"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="399" Width="463" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
+        <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="433" Width="511" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
         <StackPanel Grid.Column="1">
-            <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="startButton_Click"/>
-            <Button x:Name="deleteAllButton" Content="Delete all elements" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="deleteAllButton_Click"/>
-            <Button x:Name="deleteRoadButton" Content="Delete Road" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="119" Height="30" Click="deleteRoadButton_Click"/>
-            <StackPanel Orientation="Horizontal" Margin="3">
-                <RadioButton GroupName="cos" Name="RoadDrawingRadioButton" Margin="5,6,3,3" />
-                <Label Content="Drawing"></Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="3">
-                <RadioButton GroupName="cos" Name="rectangleAddingRadioButton" Margin="5,6,3,3" />
-                <Label Content="Rectangle"></Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="3">
-                <RadioButton GroupName="cos" Name="swarmAddingRadioButton" Margin="5,6,3,3" />
-                <Label Content="Swarm"></Label>
-            </StackPanel>
-            <ComboBox x:Name="AddingOptionscomboBox"/>
+            <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="startButton_Click"/>
+            <Button x:Name="deleteAllButton" Content="Delete all elements" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="deleteAllButton_Click"/>
+            <Button x:Name="deleteRoadButton" Content="Delete Road" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="deleteRoadButton_Click"/>
 
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="Add:" Margin="5,10,0,0" HorizontalAlignment="Left" FontSize="16" FontFamily="Yu Gothic UI"/>
+                <ComboBox x:Name="AddingOptionscomboBox" Margin="5,10,5,0" Width="93" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

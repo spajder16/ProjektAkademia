@@ -85,7 +85,7 @@ namespace ProjektAkademia
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.Pole.Width = this.Width - 180;
+            this.Pole.Width = this.Width - 190;
             this.Pole.Height = this.Height-60;
         }
 
@@ -121,6 +121,14 @@ namespace ProjektAkademia
                     myElements.Add(new MyRectangle(rand, position));
                     this.Pole.Children.Add(myElements.Last<Figure>().Show());
                    
+                }
+                if (addingOption == AddingOptions.Circle)
+                {
+
+                    Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
+                    myElements.Add(new MyCircle(rand, position));
+                    this.Pole.Children.Add(myElements.Last<Figure>().Show());
+
                 }
                 if (addingOption == AddingOptions.Swarm)
                 {
