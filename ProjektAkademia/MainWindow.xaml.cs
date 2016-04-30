@@ -16,61 +16,62 @@ using System.Windows.Threading;
 
 namespace ProjektAkademia
 {
-    
+
     public partial class MainWindow : Window
     {
-        private DispatcherTimer timer = new DispatcherTimer(); // timer object
-        private DispatcherTimer timer2 = new DispatcherTimer();
-        List<Figure> myElements = new List<Figure>();
-        Road myRoad = new Road();
-        Random rand = new Random(DateTime.Now.Ticks.GetHashCode());
+        private DispatcherTimer timer;
+        private DispatcherTimer timer2;
+
+        List<Figure> myElements;
+        Road myRoad;
+
+        Random rand;
+
         public MainWindow()
         {
             InitializeComponent();
-            
-            timer.Interval = TimeSpan.FromMilliseconds(25); 
-            timer.Tick += TimerTick;
-            timer.Start();
-            timer2.Interval = TimeSpan.FromMilliseconds(5);
-            timer2.Tick += TimerTick2;
+            InitVariables();
+            this.timer.Interval = TimeSpan.FromMilliseconds(25);
+            this.timer.Tick += TimerTick;
+            this.timer.Start();
+            this.timer2.Interval = TimeSpan.FromMilliseconds(5);
+            this.timer2.Tick += TimerTick2;
 
             this.AddingOptionscomboBox.ItemsSource = Enum.GetValues(typeof(AddingOptions));
             this.AddingOptionscomboBox.SelectedIndex = 0;
         }
+        public void InitVariables()
+        {
+            this.timer = new DispatcherTimer();
+            this.timer2 = new DispatcherTimer();
+
+            myElements = new List<Figure>();
+            myRoad = new Road();
+
+            this.rand = new Random(DateTime.Now.Ticks.GetHashCode());
+        }
         private void TimerTick(object sender, EventArgs e)
         {
-            // movement in one interval
-
-            // update position
             foreach (var element in myElements)
             {
-                if(element.OnRoad == true & element.DestinationAchieved == true)
+                if (element.OnRoad == true & element.DestinationAchieved == true)
                 {
                     Point newDestination = myRoad.NextPoint(element);
                     element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, newDestination);
 
                 }
-                else if (element.OnRoad) element.UpDateSpeed(); 
-                element.move(timer.Interval.TotalSeconds,this.Pole);
+                else if (element.OnRoad) element.UpDateSpeed();
+                element.move(timer.Interval.TotalSeconds, this.Pole);
             }
-            
-            
-           
         }
 
         private void TimerTick2(object sender, EventArgs e)
         {
-            // movement in one interval
-
-            // update position
             myRoad.RoadPoints.Add(new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y));
-
-            
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-           
             for (int i = 0; i < 500; i++)
             {
                 myElements.Add(new MyRectangle(rand));
@@ -80,13 +81,13 @@ namespace ProjektAkademia
                 myElements.Last<Figure>().Speed = new Point(rand.Next(200), rand.Next(200));
                 this.Pole.Children.Add(myElements.Last<Figure>().Show());
             }
-            
+
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Pole.Width = this.Width - 190;
-            this.Pole.Height = this.Height-60;
+            this.Pole.Height = this.Height - 60;
         }
 
         private void Pole_MouseDown(object sender, MouseButtonEventArgs e)
@@ -102,7 +103,7 @@ namespace ProjektAkademia
                     }
                     timer2.Start();
                     myRoad.RoadPoints.Clear();
-                    List<Line>toRemove = new List<Line>();
+                    List<Line> toRemove = new List<Line>();
                     foreach (var o in Pole.Children)
                     {
                         if (o is Line)
@@ -112,15 +113,15 @@ namespace ProjektAkademia
                     {
                         Pole.Children.Remove(toRemove[i]);
                     }
-                    
+
                 }
                 if (addingOption == AddingOptions.Rectangle)
                 {
-               
+
                     Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
                     myElements.Add(new MyRectangle(rand, position));
                     this.Pole.Children.Add(myElements.Last<Figure>().Show());
-                   
+
                 }
                 if (addingOption == AddingOptions.Circle)
                 {
@@ -132,40 +133,37 @@ namespace ProjektAkademia
                 }
                 if (addingOption == AddingOptions.Swarm)
                 {
-                    
+
                     for (int i = 0; i < 50; i++)
                     {
                         Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
                         myElements.Add(new MyRectangle(rand, position));
                         this.Pole.Children.Add(myElements.Last<Figure>().Show());
                     }
-                   
-                   
+
+
                 }
 
             }
-            if(e.RightButton == MouseButtonState.Pressed)
+            if (e.RightButton == MouseButtonState.Pressed)
             {
                 Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
-                if(myElements.Count != 0)
+                if (myElements.Count != 0)
                 {
                     foreach (var element in myElements)
                     {
-                        
-                        if(!element.OnRoad) element.GoToTheDestination(timer.Interval.TotalSeconds, this.Pole, position);
+                        if (!element.OnRoad) element.GoToTheDestination(timer.Interval.TotalSeconds, this.Pole, position);
                     }
                 }
             }
             if (e.MiddleButton == MouseButtonState.Pressed)
             {
-                if (myElements.Count != 0)
-                {
-                    
+
                     foreach (var element in myElements)
                     {
-                        element.Speed = new Point(rand.Next(1000)-rand.Next(1000), rand.Next(1000)-rand.Next(1000));
+                        element.Speed = new Point(rand.Next(1000) - rand.Next(1000), rand.Next(1000) - rand.Next(1000));
                     }
-                }
+               
             }
         }
 
@@ -194,7 +192,7 @@ namespace ProjektAkademia
                 }
 
             }
-            
+
         }
 
         private void deleteAllButton_Click(object sender, RoutedEventArgs e)

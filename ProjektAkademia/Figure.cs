@@ -46,7 +46,7 @@ namespace ProjektAkademia
         }
         public void GoToTheDestination(double timeInterval, Canvas Pole, Point Destination)
         {
-            MovingToDestination = true;
+            
             this.Destination = Destination;
             if (this.OnRoad)
             {

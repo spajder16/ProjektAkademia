@@ -13,13 +13,6 @@ namespace ProjektAkademia
         {
             RoadPoints = new List<Point>();
         }
-        public void MoveElementsOnRoad(List<Figure> myElements)
-        {
-            foreach (var element in myElements)
-            {
-
-            }
-        }
         public Point InitializationPointForElement(Random rand)
         {
             return RoadPoints[rand.Next(RoadPoints.Count)];
