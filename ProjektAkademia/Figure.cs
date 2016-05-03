@@ -35,11 +35,32 @@ namespace ProjektAkademia
 
         public SolidColorBrush solidColorBrush { get; set; }
 
+        protected void Init(Random rand)
+        {
+            this.me.Width = 10;
+            this.me.Height = 10;
+            this.solidColorBrush = new SolidColorBrush();
+            this.solidColorBrush.Color = Color.FromArgb(255, (byte)rand.Next(255), (byte)rand.Next(255), (byte)rand.Next(255));
+            this.me.Fill = this.solidColorBrush;
+
+            this.Speed = new Point(0, 0);
+            this.updatePosition();
+            this.Destination = new Point(0, 0);
+            this.MovingToDestination = false;
+            this.OnRoad = false;
+            this.DestinationAchieved = true;
+
+            if (rand.Next(1) == 1) this.DirectionOnTheRoad = Direction.forward;
+            else this.DirectionOnTheRoad = Direction.backward;
+        }
+
+
         protected void updatePosition()
         {
             Canvas.SetLeft(this.me, this.Position.x);
             Canvas.SetTop(this.me, this.Position.y);
         }
+
         public void GoToTheDestination(double timeInterval, Canvas Pole, Point Destination)
         {
             
@@ -52,6 +73,7 @@ namespace ProjektAkademia
             else this.Speed = (Destination - Position);
             this.DestinationAchieved = false;
         }
+
         public void move(double timeInterval, Canvas Pole)
         {
             if (this.Speed.x == 0 & this.Speed.y == 0) return;
@@ -96,16 +118,19 @@ namespace ProjektAkademia
             this.Position = new Point(x, y);
             updatePosition();
         }
+
         public UIElement Show()
         {
             return me;
         }
+
         public void ReleaseFormDestination()
         {
             MovingToDestination = false;
             OnRoad = false;
             DestinationAchieved = true;
         }
+
         public void UpDateSpeed()
         {
             Random rand = new Random((int)this.Position.x);

@@ -28,7 +28,17 @@
         }
         public static Point operator /(Point p1, double p2)
         {
-            return new Point(p1.x / p2, p1.y / p2);
+            try
+            {
+                return new Point(p1.x / p2, p1.y / p2);
+            }
+            catch (System.Exception ex)
+            {
+
+                System.Console.WriteLine(ex.Message);
+                return new Point(0, 0);
+            }
+            
         }
         public static Point operator *(Point p1, double p2)
         {
@@ -40,8 +50,7 @@
             return temp;
         }
         public Point intParse()
-        {
-            
+        {   
             return new Point((int)this.x, (int)this.y);
         }
     }

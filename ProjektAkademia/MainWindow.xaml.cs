@@ -23,9 +23,11 @@ namespace ProjektAkademia
         {
             InitializeComponent();
             InitVariables();
+       
             this.timer.Interval = TimeSpan.FromMilliseconds(25);
             this.timer.Tick += TimerTick;
             this.timer.Start();
+
             this.timer2.Interval = TimeSpan.FromMilliseconds(5);
             this.timer2.Tick += TimerTick2;
 
@@ -60,6 +62,17 @@ namespace ProjektAkademia
         private void TimerTick2(object sender, EventArgs e)
         {
             myRoad.RoadPoints.Add(new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y));
+            if (myRoad.RoadPoints.Count > 1)
+            {
+                Line myLine = new Line();
+                myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+                myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(myRoad.RoadPoints.Count - 2).x;
+                myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(myRoad.RoadPoints.Count - 1).x;
+                myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(myRoad.RoadPoints.Count - 2).y;
+                myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(myRoad.RoadPoints.Count - 1).y;
+
+                Pole.Children.Add(myLine);
+            }
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
@@ -126,10 +139,14 @@ namespace ProjektAkademia
                 if (addingOption == AddingOptions.Swarm)
                 {
 
+                    Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
+
                     for (int i = 0; i < 50; i++)
                     {
-                        Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
+
                         myElements.Add(new MyRectangle(rand, position));
+                        this.Pole.Children.Add(myElements.Last<Figure>().Show());
+                        myElements.Add(new MyCircle(rand, position));
                         this.Pole.Children.Add(myElements.Last<Figure>().Show());
                     }
 
@@ -140,22 +157,22 @@ namespace ProjektAkademia
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 Point position = new Point(Mouse.GetPosition(this.Pole).X, Mouse.GetPosition(this.Pole).Y);
-                if (myElements.Count != 0)
+
+                foreach (var element in myElements)
                 {
-                    foreach (var element in myElements)
-                    {
-                        if (!element.OnRoad) element.GoToTheDestination(timer.Interval.TotalSeconds, this.Pole, position);
-                    }
+                    if (!element.OnRoad) element.GoToTheDestination(timer.Interval.TotalSeconds, this.Pole, position);
                 }
+
             }
             if (e.MiddleButton == MouseButtonState.Pressed)
             {
 
-                    foreach (var element in myElements)
-                    {
-                        element.Speed = new Point(rand.Next(1000) - rand.Next(1000), rand.Next(1000) - rand.Next(1000));
-                    }
-               
+                foreach (var element in myElements)
+                {
+                    element.Speed = new Point(rand.Next(1000) - rand.Next(1000), rand.Next(1000) - rand.Next(1000));
+                    if (!element.OnRoad) element.ReleaseFormDestination();
+                }
+
             }
         }
 
@@ -165,17 +182,17 @@ namespace ProjektAkademia
             if (addingOption == AddingOptions.Road & e.ChangedButton == MouseButton.Left)
             {
                 timer2.Stop();
-                for (int i = 0; i < myRoad.RoadPoints.Count - 1; i++)
-                {
-                    Line myLine = new Line();
-                    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-                    myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(i).x;
-                    myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).x;
-                    myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(i).y;
-                    myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).y;
+                //for (int i = 0; i < myRoad.RoadPoints.Count - 1; i++)
+                //{
+                //    Line myLine = new Line();
+                //    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+                //    myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(i).x;
+                //    myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).x;
+                //    myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(i).y;
+                //    myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).y;
 
-                    Pole.Children.Add(myLine);
-                }
+                //    Pole.Children.Add(myLine);
+                //}
                 foreach (var element in myElements)
                 {
                     element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, myRoad.InitializationPointForElement(rand));
@@ -202,16 +219,25 @@ namespace ProjektAkademia
                 element.ReleaseFormDestination();
             }
             myRoad.RoadPoints.Clear();
-            List<Line> toRemove = new List<Line>();
-            foreach (var o in Pole.Children)
+            try
             {
-                if (o is Line)
-                    toRemove.Add((Line)o);
+                List<Line> toRemove = new List<Line>();
+                foreach (var o in Pole.Children)
+                {
+                    if (o is Line)
+                        toRemove.Add((Line)o);
+                }
+                for (int i = 0; i < toRemove.Count; i++)
+                {
+                    Pole.Children.Remove(toRemove[i]);
+                }
             }
-            for (int i = 0; i < toRemove.Count; i++)
+            catch (Exception ex)
             {
-                Pole.Children.Remove(toRemove[i]);
+
+                Console.WriteLine(ex.Message);
             }
+
         }
     }
 }
