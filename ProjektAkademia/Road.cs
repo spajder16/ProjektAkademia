@@ -13,7 +13,17 @@ namespace ProjektAkademia
         }
         public Point InitializationPointForElement(Random rand)
         {
-            return RoadPoints[rand.Next(RoadPoints.Count)];
+            try
+            {
+                return RoadPoints[rand.Next(RoadPoints.Count - 1)];
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                return new Point(0, 0);
+            }
+            
 
         }
         public Point NextPoint(Figure element)

@@ -8,14 +8,24 @@
         Title="MainWindow" Height="484.012" Width="695.64" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="Pol"/>
+            <ColumnDefinition Name="Pol" Width="1*"/>
             <ColumnDefinition Width="157"/>
         </Grid.ColumnDefinitions>
         <Canvas x:Name="Pole" HorizontalAlignment="Left" Height="433" Width="511" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" MouseDown="Pole_MouseDown" Background="White" MouseUp="Pole_MouseUp"/>
         <StackPanel Grid.Column="1">
             <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="startButton_Click"/>
             <Button x:Name="deleteAllButton" Content="Delete all elements" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="deleteAllButton_Click"/>
-            <Button x:Name="deleteRoadButton" Content="Delete Road" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="142" Height="30" Click="deleteRoadButton_Click"/>
+            <StackPanel>
+                <Label Content="Road" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,9,0" Width="143">
+                    <Button x:Name="showRoadButton" Content="Show" Width="69" Height="30" Margin="0,0,3,0" Click="showRoadButton_Click" />
+                    <Button x:Name="hideRoadButton" Content="Hide" Width="71" Height="30" Margin="0" Click="hideRoadButton_Click"/>
+                </StackPanel>
+                <Button x:Name="deleteRoadButton" Content="Delete" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="143" Height="30" Click="deleteRoadButton_Click"/>
+                <Button Name="releaseElementsButton" Content="Release elements" Margin="5,5,9,0" VerticalAlignment="Top" Height="30" Click="releaseElementsButton_Click"/>
+                <Button Name="assignElementsButton" Content="Assign elements" Margin="5,5,9,0" VerticalAlignment="Top" Height="30" Click="assignElementsButton_Click"/>
+            </StackPanel>
+
 
             <StackPanel Orientation="Horizontal" >
                 <Label Content="Add:" Margin="5,10,0,0" HorizontalAlignment="Left" FontSize="16" FontFamily="Yu Gothic UI"/>

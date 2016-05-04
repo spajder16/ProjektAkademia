@@ -182,17 +182,6 @@ namespace ProjektAkademia
             if (addingOption == AddingOptions.Road & e.ChangedButton == MouseButton.Left)
             {
                 timer2.Stop();
-                //for (int i = 0; i < myRoad.RoadPoints.Count - 1; i++)
-                //{
-                //    Line myLine = new Line();
-                //    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-                //    myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(i).x;
-                //    myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).x;
-                //    myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(i).y;
-                //    myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(i + 1).y;
-
-                //    Pole.Children.Add(myLine);
-                //}
                 foreach (var element in myElements)
                 {
                     element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, myRoad.InitializationPointForElement(rand));
@@ -211,14 +200,8 @@ namespace ProjektAkademia
             this.myRoad.RoadPoints.Clear();
 
         }
-
-        private void deleteRoadButton_Click(object sender, RoutedEventArgs e)
+        private void hideRoad()
         {
-            foreach (var element in myElements)
-            {
-                element.ReleaseFormDestination();
-            }
-            myRoad.RoadPoints.Clear();
             try
             {
                 List<Line> toRemove = new List<Line>();
@@ -237,7 +220,56 @@ namespace ProjektAkademia
 
                 Console.WriteLine(ex.Message);
             }
+        }
+        private void deleteRoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var element in myElements)
+            {
+                element.ReleaseFormDestination();
+            }
+            myRoad.RoadPoints.Clear();
+            hideRoad();
 
+        }
+
+        private void showRoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            for (int i = 1; i < myRoad.RoadPoints.Count; i++)
+            {
+                Line myLine = new Line();
+                myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+                myLine.X1 = myRoad.RoadPoints.ElementAt<Point>(i - 1).x;
+                myLine.X2 = myRoad.RoadPoints.ElementAt<Point>(i).x;
+                myLine.Y1 = myRoad.RoadPoints.ElementAt<Point>(i-1).y;
+                myLine.Y2 = myRoad.RoadPoints.ElementAt<Point>(i).y;
+
+                Pole.Children.Add(myLine);
+            }
+        }
+
+        private void hideRoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            hideRoad();
+        }
+
+        private void releaseElementsButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var element in myElements)
+            {
+                element.ReleaseFormDestination();
+            }
+        }
+
+        private void assignElementsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(myRoad.RoadPoints.Count != 0)
+                foreach (var element in myElements)
+                {
+                    element.GoToTheDestination(timer.Interval.TotalSeconds, Pole, myRoad.InitializationPointForElement(rand));
+                    element.OnRoad = true;
+                    element.DestinationAchieved = false;
+                }
         }
     }
 }
