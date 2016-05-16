@@ -21,6 +21,7 @@ namespace ProjektAkademia
             {
 
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Droga nieistnieje");
                 return new Point(0, 0);
             }
             

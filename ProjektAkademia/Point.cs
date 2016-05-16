@@ -35,7 +35,7 @@
             catch (System.Exception ex)
             {
 
-                System.Console.WriteLine(ex.Message);
+                System.Console.WriteLine("Nie dzielimy przez 0");
                 return new Point(0, 0);
             }
             
