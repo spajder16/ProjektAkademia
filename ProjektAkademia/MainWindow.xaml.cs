@@ -202,8 +202,6 @@ namespace ProjektAkademia
         }
         private void hideRoad()
         {
-            try
-            {
                 List<Line> toRemove = new List<Line>();
                 foreach (var o in Pole.Children)
                 {
@@ -214,12 +212,7 @@ namespace ProjektAkademia
                 {
                     Pole.Children.Remove(toRemove[i]);
                 }
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-            }
+            
         }
         private void deleteRoadButton_Click(object sender, RoutedEventArgs e)
         {
