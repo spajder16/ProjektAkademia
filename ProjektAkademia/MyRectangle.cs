@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 
 namespace ProjektAkademia
 {
-    class MyRectangle: Figure
+    class MyRectangle: Figure, IMovingObject
     {
         public MyRectangle(Random rand)
         {
@@ -21,6 +22,11 @@ namespace ProjektAkademia
 
             Init(rand);
         }
-        
+
+        public override void move(double timeInterval, Canvas Pole)
+        {
+            base.move(timeInterval, Pole);
+        }
+
     }
 }

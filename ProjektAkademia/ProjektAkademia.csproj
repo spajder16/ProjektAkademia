@@ -56,7 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Enums.cs" />
-    <Compile Include="IDrawingObject.cs" />
+    <Compile Include="IMovingObject.cs" />
     <Compile Include="MyCircle.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="MyRectangle.cs" />

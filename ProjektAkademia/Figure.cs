@@ -8,7 +8,7 @@ namespace ProjektAkademia
 {
 
 
-    class Figure : IDrawingObject
+    class Figure: IMovingObject 
     {
         
         public Shape me { get; set; }
@@ -74,13 +74,13 @@ namespace ProjektAkademia
             this.DestinationAchieved = false;
         }
 
-        public void move(double timeInterval, Canvas Pole)
+        public virtual void move(double timeInterval, Canvas Pole)
         {
             if (this.Speed.x == 0 & this.Speed.y == 0) return;
             if (this.MovingToDestination == true)
             {
                 int Precision = 10;
-                if (  Position.x < Destination.x + Precision
+                if (Position.x < Destination.x + Precision
                     & Position.x > Destination.x - Precision
                     & Position.y < Destination.y + Precision
                     & Position.y > Destination.y - Precision)
@@ -133,7 +133,6 @@ namespace ProjektAkademia
 
         public void UpDateSpeed()
         {
-            Random rand = new Random((int)this.Position.x);
             this.Speed = (Destination - Position)*2 ;
         }
 
